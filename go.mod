@@ -1,4 +1,4 @@
-module github.com/goverland-labs/core-api
+module github.com/goverland-labs/inbox-api
 
 go 1.20
 
