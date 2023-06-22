@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;inboxapi";
+
+service User {
+  rpc GetByID(UserByIDRequest) returns (UserByIDResponse);
+  rpc GetByUuid(UserByUuidRequest) returns (UserByUuidResponse);
+  rpc Create(UserCreateRequest) returns (UserCreateResponse);
+}
+
+message UserByIDRequest {
+  string user_id = 1;
+}
+
+message UserInfo {
+  uint64 id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  string device_uuid = 4;
+}
+
+message UserByIDResponse {
+  UserInfo user = 1;
+}
+
+message UserByUuidRequest {
+  string device_uuid = 1;
+}
+
+message UserByUuidResponse {
+  UserInfo user = 1;
+}
+
+message UserCreateRequest {
+  string device_uuid = 1;
+}
+
+message UserCreateResponse {
+  UserInfo user = 1;
+}
