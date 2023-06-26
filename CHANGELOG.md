@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- Changed user id to string
+
 ## [0.0.3] - 2023-06-22
 
 ### Fixed
