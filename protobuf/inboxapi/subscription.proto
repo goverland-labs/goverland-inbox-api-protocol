@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package internalapi;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;inboxapi";
+
+service Subscription {
+  rpc Subscribe(SubscribeRequest) returns (SubscriptionInfo);
+  rpc Unsubscribe(UnsubscribeRequest) returns (google.protobuf.Empty);
+  rpc ListSubscriptions(ListSubscriptionRequest) returns (ListSubscriptionResponse);
+  rpc GetSubscription(GetSubscriptionRequest) returns (SubscriptionInfo);
+}
+
+message SubscribeRequest {
+  string subscriber_id = 1;
+  string dao_id = 2;
+}
+
+message SubscriptionInfo {
+  string subscription_id = 1;
+  string subscriber_id = 2;
+  string dao_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message ListSubscriptionRequest {
+  string subscriber_id = 1;
+  optional uint64 limit = 2;
+  optional uint64 offset = 3;
+}
+
+message ListSubscriptionResponse {
+  repeated SubscriptionInfo items = 1;
+  uint64 total_count = 2;
+}
+
+message UnsubscribeRequest {
+  string subscription_id = 1;
+}
+
+message GetSubscriptionRequest {
+  string subscription_id = 1;
+}
