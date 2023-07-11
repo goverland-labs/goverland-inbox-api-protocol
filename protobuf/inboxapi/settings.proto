@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;inboxapi";
+
+service Settings {
+  rpc AddPushToken(AddPushTokenRequest) returns (google.protobuf.Empty);
+  rpc RemovePushToken(RemovePushTokenRequest) returns (google.protobuf.Empty);
+  rpc PushTokenExists(PushTokenExistsRequest) returns (PushTokenExistsResponse);
+}
+
+message AddPushTokenRequest {
+  string user_id = 1;
+  string token = 2;
+}
+
+message RemovePushTokenRequest {
+  string user_id = 1;
+}
+
+message PushTokenExistsRequest {
+  string user_id = 1;
+}
+
+message PushTokenExistsResponse {
+  bool exists = 1;
+}
