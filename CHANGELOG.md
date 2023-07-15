@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added compile scripts
+- Added find subscribers endpoint definition
+
 ## [0.0.6] - 2023-07-11
 
 ### Added

@@ -12,6 +12,10 @@ service User {
   rpc Create(UserCreateRequest) returns (UserCreateResponse);
 }
 
+message UserID {
+  string user_id = 1;
+}
+
 message UserByIDRequest {
   string user_id = 1;
 }

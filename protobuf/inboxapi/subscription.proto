@@ -4,6 +4,7 @@ package internalapi;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "inboxapi/user.proto";
 
 option go_package = ".;inboxapi";
 
@@ -12,6 +13,15 @@ service Subscription {
   rpc Unsubscribe(UnsubscribeRequest) returns (google.protobuf.Empty);
   rpc ListSubscriptions(ListSubscriptionRequest) returns (ListSubscriptionResponse);
   rpc GetSubscription(GetSubscriptionRequest) returns (SubscriptionInfo);
+  rpc FindSubscribers(FindSubscribersRequest) returns (UserList);
+}
+
+message FindSubscribersRequest {
+  string dao_id = 1;
+}
+
+message UserList {
+  repeated inboxapi.UserID users = 1;
 }
 
 message SubscribeRequest {
