@@ -55,11 +55,13 @@ message FeedItem {
   string id = 1;
   google.protobuf.Timestamp created_at = 2;
   google.protobuf.Timestamp updated_at = 3;
-  string dao_id = 4;
-  optional string proposal_id = 5;
-  optional string discussion_id = 6;
-  string type = 7;
-  string action = 8;
-  bytes snapshot = 9;
-  bytes timeline = 10;
+  google.protobuf.Timestamp read_at = 4;
+  google.protobuf.Timestamp archived_at = 5;
+  string dao_id = 6;
+  optional string proposal_id = 7;
+  optional string discussion_id = 8;
+  string type = 9;
+  string action = 10;
+  bytes snapshot = 11;
+  bytes timeline = 12;
 }

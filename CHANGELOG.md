@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added read_at and archived_at feilds to feed entity
+
 ## [0.0.9] - 2023-07-15
 
 ### Fixed
