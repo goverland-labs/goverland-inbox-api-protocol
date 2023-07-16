@@ -17,7 +17,7 @@ service Feed {
 
 message GetUserFeedRequest {
   string subscriber_id = 1;
-  bool include_unread = 2;
+  bool include_read = 2;
   bool include_archived = 3;
   uint32 limit = 4;
   uint32 offset = 5;
