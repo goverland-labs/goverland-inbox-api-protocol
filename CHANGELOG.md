@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added feed service and needed entities
+
 ## [0.0.7] - 2023-07-15
 
 ### Added

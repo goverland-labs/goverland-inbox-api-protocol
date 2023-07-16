@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;inboxapi";
+
+service Feed {
+  rpc GetUserFeed(GetUserFeedRequest) returns (FeedList);
+  rpc MarkAsRead(MarkAsReadRequest) returns (google.protobuf.Empty);
+  rpc MarkAsUnread(MarkAsUnreadRequest) returns (google.protobuf.Empty);
+  rpc MarkAsArchived(MarkAsArchivedRequest) returns (google.protobuf.Empty);
+  rpc MarkAsUnarchived(MarkAsUnrchivedRequest) returns (google.protobuf.Empty);
+}
+
+message GetUserFeedRequest {
+  string subscriber_id = 1;
+  bool include_unread = 2;
+  bool include_archived = 3;
+  uint32 limit = 4;
+  uint32 offset = 5;
+}
+
+message MarkAsReadRequest {
+  string subscriber_id = 1;
+  repeated string ids = 2;
+  optional google.protobuf.Timestamp before = 3;
+}
+
+message MarkAsUnreadRequest {
+  string subscriber_id = 1;
+  repeated string ids = 2;
+}
+
+message MarkAsArchivedRequest {
+  string subscriber_id = 1;
+  repeated string ids = 2;
+  optional google.protobuf.Timestamp before = 3;
+}
+
+message MarkAsUnrchivedRequest {
+  string subscriber_id = 1;
+  repeated string ids = 2;
+}
+
+message FeedList {
+  repeated FeedItem list = 1;
+  uint32 total_count = 3;
+  uint32 unread_count = 4;
+}
+
+message FeedItem {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  string dao_id = 4;
+  optional string proposal_id = 5;
+  optional string discussion_id = 6;
+  string type = 7;
+  string action = 8;
+  bytes snapshot = 9;
+  bytes timeline = 10;
+}
