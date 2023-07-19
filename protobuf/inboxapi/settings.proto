@@ -10,6 +10,7 @@ service Settings {
   rpc AddPushToken(AddPushTokenRequest) returns (google.protobuf.Empty);
   rpc RemovePushToken(RemovePushTokenRequest) returns (google.protobuf.Empty);
   rpc PushTokenExists(PushTokenExistsRequest) returns (PushTokenExistsResponse);
+  rpc GetPushToken(GetPushTokenRequest) returns (PushTokenResponse);
 }
 
 message AddPushTokenRequest {
@@ -27,4 +28,12 @@ message PushTokenExistsRequest {
 
 message PushTokenExistsResponse {
   bool exists = 1;
+}
+
+message GetPushTokenRequest {
+  string user_id = 1;
+}
+
+message PushTokenResponse {
+  string token = 1;
 }
