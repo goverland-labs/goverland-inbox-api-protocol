@@ -26,6 +26,7 @@ type SettingsClient interface {
 	AddPushToken(ctx context.Context, in *AddPushTokenRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RemovePushToken(ctx context.Context, in *RemovePushTokenRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	PushTokenExists(ctx context.Context, in *PushTokenExistsRequest, opts ...grpc.CallOption) (*PushTokenExistsResponse, error)
+	GetPushToken(ctx context.Context, in *GetPushTokenRequest, opts ...grpc.CallOption) (*PushTokenResponse, error)
 }
 
 type settingsClient struct {
@@ -63,6 +64,15 @@ func (c *settingsClient) PushTokenExists(ctx context.Context, in *PushTokenExist
 	return out, nil
 }
 
+func (c *settingsClient) GetPushToken(ctx context.Context, in *GetPushTokenRequest, opts ...grpc.CallOption) (*PushTokenResponse, error) {
+	out := new(PushTokenResponse)
+	err := c.cc.Invoke(ctx, "/inboxapi.Settings/GetPushToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SettingsServer is the server API for Settings service.
 // All implementations must embed UnimplementedSettingsServer
 // for forward compatibility
@@ -70,6 +80,7 @@ type SettingsServer interface {
 	AddPushToken(context.Context, *AddPushTokenRequest) (*emptypb.Empty, error)
 	RemovePushToken(context.Context, *RemovePushTokenRequest) (*emptypb.Empty, error)
 	PushTokenExists(context.Context, *PushTokenExistsRequest) (*PushTokenExistsResponse, error)
+	GetPushToken(context.Context, *GetPushTokenRequest) (*PushTokenResponse, error)
 	mustEmbedUnimplementedSettingsServer()
 }
 
@@ -85,6 +96,9 @@ func (UnimplementedSettingsServer) RemovePushToken(context.Context, *RemovePushT
 }
 func (UnimplementedSettingsServer) PushTokenExists(context.Context, *PushTokenExistsRequest) (*PushTokenExistsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PushTokenExists not implemented")
+}
+func (UnimplementedSettingsServer) GetPushToken(context.Context, *GetPushTokenRequest) (*PushTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPushToken not implemented")
 }
 func (UnimplementedSettingsServer) mustEmbedUnimplementedSettingsServer() {}
 
@@ -153,6 +167,24 @@ func _Settings_PushTokenExists_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Settings_GetPushToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPushTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetPushToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/inboxapi.Settings/GetPushToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetPushToken(ctx, req.(*GetPushTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Settings_ServiceDesc is the grpc.ServiceDesc for Settings service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -171,6 +203,10 @@ var Settings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PushTokenExists",
 			Handler:    _Settings_PushTokenExists_Handler,
+		},
+		{
+			MethodName: "GetPushToken",
+			Handler:    _Settings_GetPushToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
