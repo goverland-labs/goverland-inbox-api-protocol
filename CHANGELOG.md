@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.11] - 2023-07-25
+
 ### Added
 - RPC method for getting push token by user identifier
 
