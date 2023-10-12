@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.12] - 2023-10-12
+
 ### Added
 - Added parameters for filtering the result of feed by kinds
 
