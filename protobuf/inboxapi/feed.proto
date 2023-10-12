@@ -12,13 +12,19 @@ service Feed {
   rpc MarkAsRead(MarkAsReadRequest) returns (google.protobuf.Empty);
   rpc MarkAsUnread(MarkAsUnreadRequest) returns (google.protobuf.Empty);
   rpc MarkAsArchived(MarkAsArchivedRequest) returns (google.protobuf.Empty);
-  rpc MarkAsUnarchived(MarkAsUnrchivedRequest) returns (google.protobuf.Empty);
+  rpc MarkAsUnarchived(MarkAsUnarchivedRequest) returns (google.protobuf.Empty);
 }
 
 message GetUserFeedRequest {
+  enum State {
+    Include = 0; // Include this kind of items
+    Exclude = 1; // Don't include this kind of items
+    ExcludeOther = 2; // Return this lind of items ONLY
+  }
+
   string subscriber_id = 1;
-  bool include_read = 2;
-  bool include_archived = 3;
+  State read_state = 2;
+  State archived_state = 3;
   uint32 limit = 4;
   uint32 offset = 5;
 }
@@ -40,7 +46,7 @@ message MarkAsArchivedRequest {
   optional google.protobuf.Timestamp before = 3;
 }
 
-message MarkAsUnrchivedRequest {
+message MarkAsUnarchivedRequest {
   string subscriber_id = 1;
   repeated string ids = 2;
 }
