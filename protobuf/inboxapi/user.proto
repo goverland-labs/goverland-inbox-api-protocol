@@ -75,5 +75,4 @@ message RecentlyViewed {
 
 message UserLastViewedResponse {
   repeated RecentlyViewed list = 1;
-  uint64 total_count = 2;
 }
