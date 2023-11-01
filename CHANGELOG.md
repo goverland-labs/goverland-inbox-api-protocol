@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Recently viewed methods
+
 ## [0.0.12] - 2023-10-12
 
 ### Added
