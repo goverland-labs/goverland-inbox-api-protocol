@@ -13,7 +13,7 @@ service Feed {
   rpc MarkAsUnread(MarkAsUnreadRequest) returns (google.protobuf.Empty);
   rpc MarkAsArchived(MarkAsArchivedRequest) returns (google.protobuf.Empty);
   rpc MarkAsUnarchived(MarkAsUnarchivedRequest) returns (google.protobuf.Empty);
-  rpc Subscribe(SubscribeRequest) returns (google.protobuf.Empty);
+  rpc UserSubscribe(UserSubscribeRequest) returns (google.protobuf.Empty);
 }
 
 message GetUserFeedRequest {
@@ -73,7 +73,7 @@ message FeedItem {
   bytes timeline = 12;
 }
 
-message SubscribeRequest {
+message UserSubscribeRequest {
   string subscriber_id = 1;
   string dao_id = 2;
 }

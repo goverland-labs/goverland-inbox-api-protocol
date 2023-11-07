@@ -28,7 +28,7 @@ type FeedClient interface {
 	MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	MarkAsArchived(ctx context.Context, in *MarkAsArchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UserSubscribe(ctx context.Context, in *UserSubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type feedClient struct {
@@ -84,9 +84,9 @@ func (c *feedClient) MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedR
 	return out, nil
 }
 
-func (c *feedClient) Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *feedClient) UserSubscribe(ctx context.Context, in *UserSubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/inboxapi.Feed/Subscribe", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/inboxapi.Feed/UserSubscribe", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ type FeedServer interface {
 	MarkAsUnread(context.Context, *MarkAsUnreadRequest) (*emptypb.Empty, error)
 	MarkAsArchived(context.Context, *MarkAsArchivedRequest) (*emptypb.Empty, error)
 	MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*emptypb.Empty, error)
-	Subscribe(context.Context, *SubscribeRequest) (*emptypb.Empty, error)
+	UserSubscribe(context.Context, *UserSubscribeRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -125,8 +125,8 @@ func (UnimplementedFeedServer) MarkAsArchived(context.Context, *MarkAsArchivedRe
 func (UnimplementedFeedServer) MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkAsUnarchived not implemented")
 }
-func (UnimplementedFeedServer) Subscribe(context.Context, *SubscribeRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
+func (UnimplementedFeedServer) UserSubscribe(context.Context, *UserSubscribeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserSubscribe not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -231,20 +231,20 @@ func _Feed_MarkAsUnarchived_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Feed_Subscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubscribeRequest)
+func _Feed_UserSubscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserSubscribeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FeedServer).Subscribe(ctx, in)
+		return srv.(FeedServer).UserSubscribe(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/inboxapi.Feed/Subscribe",
+		FullMethod: "/inboxapi.Feed/UserSubscribe",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FeedServer).Subscribe(ctx, req.(*SubscribeRequest))
+		return srv.(FeedServer).UserSubscribe(ctx, req.(*UserSubscribeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -277,8 +277,8 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Feed_MarkAsUnarchived_Handler,
 		},
 		{
-			MethodName: "Subscribe",
-			Handler:    _Feed_Subscribe_Handler,
+			MethodName: "UserSubscribe",
+			Handler:    _Feed_UserSubscribe_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
