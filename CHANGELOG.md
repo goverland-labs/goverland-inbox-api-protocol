@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.14] - 2023-11-07
+
 ### Added
 - Subscribe endpoint for inbox-feed
 
