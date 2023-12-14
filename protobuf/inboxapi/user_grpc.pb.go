@@ -20,27 +20,25 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_GetByID_FullMethodName       = "/inboxapi.User/GetByID"
-	User_GetByUuid_FullMethodName     = "/inboxapi.User/GetByUuid"
-	User_CreateSession_FullMethodName = "/inboxapi.User/CreateSession"
-	User_GetSession_FullMethodName    = "/inboxapi.User/GetSession"
-	User_DeleteSession_FullMethodName = "/inboxapi.User/DeleteSession"
-	User_DeleteUser_FullMethodName    = "/inboxapi.User/DeleteUser"
-	User_AddView_FullMethodName       = "/inboxapi.User/AddView"
-	User_LastViewed_FullMethodName    = "/inboxapi.User/LastViewed"
+	User_CreateSession_FullMethodName  = "/inboxapi.User/CreateSession"
+	User_GetUserProfile_FullMethodName = "/inboxapi.User/GetUserProfile"
+	User_GetSession_FullMethodName     = "/inboxapi.User/GetSession"
+	User_DeleteSession_FullMethodName  = "/inboxapi.User/DeleteSession"
+	User_DeleteUser_FullMethodName     = "/inboxapi.User/DeleteUser"
+	User_AddView_FullMethodName        = "/inboxapi.User/AddView"
+	User_LastViewed_FullMethodName     = "/inboxapi.User/LastViewed"
 )
 
 // UserClient is the client API for User service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	GetByID(ctx context.Context, in *UserByIDRequest, opts ...grpc.CallOption) (*UserByIDResponse, error)
-	GetByUuid(ctx context.Context, in *UserByUuidRequest, opts ...grpc.CallOption) (*UserByUuidResponse, error)
 	// Create new session for user with specific account info
 	// if user doesn't exist, create new user
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
+	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*UserProfile, error)
 	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -56,27 +54,18 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) GetByID(ctx context.Context, in *UserByIDRequest, opts ...grpc.CallOption) (*UserByIDResponse, error) {
-	out := new(UserByIDResponse)
-	err := c.cc.Invoke(ctx, User_GetByID_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userClient) GetByUuid(ctx context.Context, in *UserByUuidRequest, opts ...grpc.CallOption) (*UserByUuidResponse, error) {
-	out := new(UserByUuidResponse)
-	err := c.cc.Invoke(ctx, User_GetByUuid_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error) {
 	out := new(CreateSessionResponse)
 	err := c.cc.Invoke(ctx, User_CreateSession_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*UserProfile, error) {
+	out := new(UserProfile)
+	err := c.cc.Invoke(ctx, User_GetUserProfile_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -132,13 +121,12 @@ func (c *userClient) LastViewed(ctx context.Context, in *UserLastViewedRequest, 
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	GetByID(context.Context, *UserByIDRequest) (*UserByIDResponse, error)
-	GetByUuid(context.Context, *UserByUuidRequest) (*UserByUuidResponse, error)
 	// Create new session for user with specific account info
 	// if user doesn't exist, create new user
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
+	GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error)
 	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 	DeleteSession(context.Context, *DeleteSessionRequest) (*emptypb.Empty, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
@@ -151,14 +139,11 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) GetByID(context.Context, *UserByIDRequest) (*UserByIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
-}
-func (UnimplementedUserServer) GetByUuid(context.Context, *UserByUuidRequest) (*UserByUuidResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetByUuid not implemented")
-}
 func (UnimplementedUserServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSession not implemented")
+}
+func (UnimplementedUserServer) GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserProfile not implemented")
 }
 func (UnimplementedUserServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
@@ -188,42 +173,6 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserByIDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).GetByID(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: User_GetByID_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetByID(ctx, req.(*UserByIDRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _User_GetByUuid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserByUuidRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).GetByUuid(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: User_GetByUuid_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetByUuid(ctx, req.(*UserByUuidRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _User_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSessionRequest)
 	if err := dec(in); err != nil {
@@ -238,6 +187,24 @@ func _User_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).CreateSession(ctx, req.(*CreateSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUserProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetUserProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserProfile(ctx, req.(*GetUserProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -340,16 +307,12 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetByID",
-			Handler:    _User_GetByID_Handler,
-		},
-		{
-			MethodName: "GetByUuid",
-			Handler:    _User_GetByUuid_Handler,
-		},
-		{
 			MethodName: "CreateSession",
 			Handler:    _User_CreateSession_Handler,
+		},
+		{
+			MethodName: "GetUserProfile",
+			Handler:    _User_GetUserProfile_Handler,
 		},
 		{
 			MethodName: "GetSession",

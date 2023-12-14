@@ -8,14 +8,13 @@ import "google/protobuf/timestamp.proto";
 option go_package = ".;inboxapi";
 
 service User {
-  rpc GetByID(UserByIDRequest) returns (UserByIDResponse);
-  rpc GetByUuid(UserByUuidRequest) returns (UserByUuidResponse);
-
   // Create new session for user with specific account info
   // if user doesn't exist, create new user
   // if user exists, create new session for user
   // returns new session info, user account info and last sessions
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+
+  rpc GetUserProfile(GetUserProfileRequest) returns (UserProfile);
 
   rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
 
@@ -28,10 +27,6 @@ service User {
 }
 
 message UserID {
-  string user_id = 1;
-}
-
-message UserByIDRequest {
   string user_id = 1;
 }
 
@@ -58,16 +53,9 @@ message Session {
   string user_id = 6;
 }
 
-message UserByIDResponse {
+message UserProfile {
   UserInfo user = 1;
-}
-
-message UserByUuidRequest {
-  string device_uuid = 1;
-}
-
-message UserByUuidResponse {
-  UserInfo user = 1;
+  repeated Session last_sessions = 2;
 }
 
 message CreateSessionRequest {
@@ -88,8 +76,11 @@ message Regular {
 
 message CreateSessionResponse {
   Session created_session = 1;
-  UserInfo user = 2;
-  repeated Session last_sessions = 3;
+  UserProfile user_profile = 2;
+}
+
+message GetUserProfileRequest {
+  string user_id = 1;
 }
 
 message GetSessionRequest {
