@@ -10,7 +10,19 @@ option go_package = ".;inboxapi";
 service User {
   rpc GetByID(UserByIDRequest) returns (UserByIDResponse);
   rpc GetByUuid(UserByUuidRequest) returns (UserByUuidResponse);
-  rpc Create(UserCreateRequest) returns (UserCreateResponse);
+
+  // Create new session for user with specific account info
+  // if user doesn't exist, create new user
+  // if user exists, create new session for user
+  // returns new session info, user account info and last sessions
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+
+  rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+
+  rpc DeleteSession(DeleteSessionRequest) returns (google.protobuf.Empty);
+
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+
   rpc AddView(UserViewRequest) returns (google.protobuf.Empty);
   rpc LastViewed(UserLastViewedRequest) returns (UserLastViewedResponse);
 }
@@ -28,6 +40,15 @@ message UserInfo {
   google.protobuf.Timestamp created_at = 2;
   google.protobuf.Timestamp updated_at = 3;
   string device_uuid = 4;
+  optional string address = 5;
+}
+
+message Session {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  string device_uuid = 4;
+  string device_name = 5;
+  string user_id = 6;
 }
 
 message UserByIDResponse {
@@ -42,12 +63,43 @@ message UserByUuidResponse {
   UserInfo user = 1;
 }
 
-message UserCreateRequest {
+message CreateSessionRequest {
   string device_uuid = 1;
+  string device_name = 2;
+
+  oneof account {
+    Guest guest = 3;
+    Regular regular = 4;
+  }
 }
 
-message UserCreateResponse {
-  UserInfo user = 1;
+message Guest {}
+message Regular {
+  string address = 1;
+  optional string guest_session_id = 2;
+}
+
+message CreateSessionResponse {
+  Session created_session = 1;
+  UserInfo user = 2;
+  repeated Session last_sessions = 3;
+}
+
+message GetSessionRequest {
+  string session_id = 1;
+}
+
+message GetSessionResponse {
+  Session session = 1;
+  UserInfo user = 2;
+}
+
+message DeleteSessionRequest {
+  string session_id = 1;
+}
+
+message DeleteUserRequest {
+  string user_id = 1;
 }
 
 enum RecentlyViewedType {
