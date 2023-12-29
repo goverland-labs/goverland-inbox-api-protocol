@@ -43,6 +43,7 @@ message UserInfo {
   string device_uuid = 4;
   optional string address = 5;
   UserRole role = 6;
+  optional string ens = 7;
 }
 
 message Session {
