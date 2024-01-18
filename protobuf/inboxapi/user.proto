@@ -24,6 +24,8 @@ service User {
 
   rpc AddView(UserViewRequest) returns (google.protobuf.Empty);
   rpc LastViewed(UserLastViewedRequest) returns (UserLastViewedResponse);
+
+  rpc TrackActivity(TrackActivityRequest) returns (google.protobuf.Empty);
 }
 
 message UserID {
@@ -57,6 +59,7 @@ message Session {
 message UserProfile {
   UserInfo user = 1;
   repeated Session last_sessions = 2;
+  optional google.protobuf.Timestamp last_activity_at = 3;
 }
 
 message CreateSessionRequest {
@@ -126,4 +129,8 @@ message RecentlyViewed {
 
 message UserLastViewedResponse {
   repeated RecentlyViewed list = 1;
+}
+
+message TrackActivityRequest {
+  string user_id = 1;
 }

@@ -27,6 +27,7 @@ const (
 	User_DeleteUser_FullMethodName     = "/inboxapi.User/DeleteUser"
 	User_AddView_FullMethodName        = "/inboxapi.User/AddView"
 	User_LastViewed_FullMethodName     = "/inboxapi.User/LastViewed"
+	User_TrackActivity_FullMethodName  = "/inboxapi.User/TrackActivity"
 )
 
 // UserClient is the client API for User service.
@@ -44,6 +45,7 @@ type UserClient interface {
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	AddView(ctx context.Context, in *UserViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	LastViewed(ctx context.Context, in *UserLastViewedRequest, opts ...grpc.CallOption) (*UserLastViewedResponse, error)
+	TrackActivity(ctx context.Context, in *TrackActivityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -117,6 +119,15 @@ func (c *userClient) LastViewed(ctx context.Context, in *UserLastViewedRequest, 
 	return out, nil
 }
 
+func (c *userClient) TrackActivity(ctx context.Context, in *TrackActivityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, User_TrackActivity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -132,6 +143,7 @@ type UserServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
 	AddView(context.Context, *UserViewRequest) (*emptypb.Empty, error)
 	LastViewed(context.Context, *UserLastViewedRequest) (*UserLastViewedResponse, error)
+	TrackActivity(context.Context, *TrackActivityRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -159,6 +171,9 @@ func (UnimplementedUserServer) AddView(context.Context, *UserViewRequest) (*empt
 }
 func (UnimplementedUserServer) LastViewed(context.Context, *UserLastViewedRequest) (*UserLastViewedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LastViewed not implemented")
+}
+func (UnimplementedUserServer) TrackActivity(context.Context, *TrackActivityRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TrackActivity not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -299,6 +314,24 @@ func _User_LastViewed_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_TrackActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TrackActivityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).TrackActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_TrackActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).TrackActivity(ctx, req.(*TrackActivityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -333,6 +366,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LastViewed",
 			Handler:    _User_LastViewed_Handler,
+		},
+		{
+			MethodName: "TrackActivity",
+			Handler:    _User_TrackActivity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
