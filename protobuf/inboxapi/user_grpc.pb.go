@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	User_CreateSession_FullMethodName  = "/inboxapi.User/CreateSession"
+	User_UseAuthNonce_FullMethodName   = "/inboxapi.User/UseAuthNonce"
 	User_GetUserProfile_FullMethodName = "/inboxapi.User/GetUserProfile"
 	User_GetSession_FullMethodName     = "/inboxapi.User/GetSession"
 	User_DeleteSession_FullMethodName  = "/inboxapi.User/DeleteSession"
@@ -39,6 +40,7 @@ type UserClient interface {
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
+	UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*UserProfile, error)
 	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -59,6 +61,15 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 func (c *userClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error) {
 	out := new(CreateSessionResponse)
 	err := c.cc.Invoke(ctx, User_CreateSession_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, User_UseAuthNonce_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -137,6 +148,7 @@ type UserServer interface {
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
+	UseAuthNonce(context.Context, *UseAuthNonceRequest) (*emptypb.Empty, error)
 	GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error)
 	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 	DeleteSession(context.Context, *DeleteSessionRequest) (*emptypb.Empty, error)
@@ -153,6 +165,9 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSession not implemented")
+}
+func (UnimplementedUserServer) UseAuthNonce(context.Context, *UseAuthNonceRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UseAuthNonce not implemented")
 }
 func (UnimplementedUserServer) GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserProfile not implemented")
@@ -202,6 +217,24 @@ func _User_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).CreateSession(ctx, req.(*CreateSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UseAuthNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UseAuthNonceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UseAuthNonce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UseAuthNonce_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UseAuthNonce(ctx, req.(*UseAuthNonceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -342,6 +375,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSession",
 			Handler:    _User_CreateSession_Handler,
+		},
+		{
+			MethodName: "UseAuthNonce",
+			Handler:    _User_UseAuthNonce_Handler,
 		},
 		{
 			MethodName: "GetUserProfile",
