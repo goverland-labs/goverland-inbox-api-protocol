@@ -55,12 +55,12 @@ message Session {
   string device_uuid = 4;
   string device_name = 5;
   string user_id = 6;
+  optional google.protobuf.Timestamp last_activity_at = 7;
 }
 
 message UserProfile {
   UserInfo user = 1;
   repeated Session last_sessions = 2;
-  optional google.protobuf.Timestamp last_activity_at = 3;
 }
 
 message CreateSessionRequest {
@@ -134,6 +134,7 @@ message UserLastViewedResponse {
 
 message TrackActivityRequest {
   string user_id = 1;
+  string session_id = 2;
 }
 
 message UseAuthNonceRequest {
