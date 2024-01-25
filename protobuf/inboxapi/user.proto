@@ -13,7 +13,7 @@ service User {
   // if user exists, create new session for user
   // returns new session info, user account info and last sessions
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
-  rpc UseAuthNonce(UseAuthNonceRequest) returns (google.protobuf.Empty);
+  rpc UseAuthNonce(UseAuthNonceRequest) returns (UseAuthNonceResponse);
 
   rpc GetUserProfile(GetUserProfileRequest) returns (UserProfile);
 
@@ -141,3 +141,8 @@ message UseAuthNonceRequest {
   string nonce = 2;
   google.protobuf.Timestamp expiredAt = 3;
 }
+
+message UseAuthNonceResponse {
+  bool valid = 1;
+}
+

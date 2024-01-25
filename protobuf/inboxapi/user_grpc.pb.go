@@ -40,7 +40,7 @@ type UserClient interface {
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
-	UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*UseAuthNonceResponse, error)
 	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*UserProfile, error)
 	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -67,8 +67,8 @@ func (c *userClient) CreateSession(ctx context.Context, in *CreateSessionRequest
 	return out, nil
 }
 
-func (c *userClient) UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *userClient) UseAuthNonce(ctx context.Context, in *UseAuthNonceRequest, opts ...grpc.CallOption) (*UseAuthNonceResponse, error) {
+	out := new(UseAuthNonceResponse)
 	err := c.cc.Invoke(ctx, User_UseAuthNonce_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -148,7 +148,7 @@ type UserServer interface {
 	// if user exists, create new session for user
 	// returns new session info, user account info and last sessions
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
-	UseAuthNonce(context.Context, *UseAuthNonceRequest) (*emptypb.Empty, error)
+	UseAuthNonce(context.Context, *UseAuthNonceRequest) (*UseAuthNonceResponse, error)
 	GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error)
 	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 	DeleteSession(context.Context, *DeleteSessionRequest) (*emptypb.Empty, error)
@@ -166,7 +166,7 @@ type UnimplementedUserServer struct {
 func (UnimplementedUserServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSession not implemented")
 }
-func (UnimplementedUserServer) UseAuthNonce(context.Context, *UseAuthNonceRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServer) UseAuthNonce(context.Context, *UseAuthNonceRequest) (*UseAuthNonceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UseAuthNonce not implemented")
 }
 func (UnimplementedUserServer) GetUserProfile(context.Context, *GetUserProfileRequest) (*UserProfile, error) {
