@@ -27,6 +27,8 @@ service User {
   rpc LastViewed(UserLastViewedRequest) returns (UserLastViewedResponse);
 
   rpc TrackActivity(TrackActivityRequest) returns (google.protobuf.Empty);
+
+  rpc AllowSendingPush(AllowSendingPushRequest) returns (AllowSendingPushResponse);
 }
 
 message UserID {
@@ -145,5 +147,13 @@ message UseAuthNonceRequest {
 
 message UseAuthNonceResponse {
   bool valid = 1;
+}
+
+message AllowSendingPushRequest {
+  string user_id = 1;
+}
+
+message AllowSendingPushResponse {
+  bool allow = 1;
 }
 
