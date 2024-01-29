@@ -13,6 +13,7 @@ service User {
   // if user exists, create new session for user
   // returns new session info, user account info and last sessions
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc UseAuthNonce(UseAuthNonceRequest) returns (UseAuthNonceResponse);
 
   rpc GetUserProfile(GetUserProfileRequest) returns (UserProfile);
 
@@ -24,6 +25,10 @@ service User {
 
   rpc AddView(UserViewRequest) returns (google.protobuf.Empty);
   rpc LastViewed(UserLastViewedRequest) returns (UserLastViewedResponse);
+
+  rpc TrackActivity(TrackActivityRequest) returns (google.protobuf.Empty);
+
+  rpc AllowSendingPush(AllowSendingPushRequest) returns (AllowSendingPushResponse);
 }
 
 message UserID {
@@ -52,6 +57,7 @@ message Session {
   string device_uuid = 4;
   string device_name = 5;
   string user_id = 6;
+  optional google.protobuf.Timestamp last_activity_at = 7;
 }
 
 message UserProfile {
@@ -127,3 +133,27 @@ message RecentlyViewed {
 message UserLastViewedResponse {
   repeated RecentlyViewed list = 1;
 }
+
+message TrackActivityRequest {
+  string user_id = 1;
+  string session_id = 2;
+}
+
+message UseAuthNonceRequest {
+  string address = 1;
+  string nonce = 2;
+  google.protobuf.Timestamp expiredAt = 3;
+}
+
+message UseAuthNonceResponse {
+  bool valid = 1;
+}
+
+message AllowSendingPushRequest {
+  string user_id = 1;
+}
+
+message AllowSendingPushResponse {
+  bool allow = 1;
+}
+
