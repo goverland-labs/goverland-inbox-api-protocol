@@ -29,6 +29,8 @@ service User {
   rpc TrackActivity(TrackActivityRequest) returns (google.protobuf.Empty);
 
   rpc AllowSendingPush(AllowSendingPushRequest) returns (AllowSendingPushResponse);
+
+  rpc GetUserCanVoteProposals(GetUserCanVoteProposalsRequest) returns (GetUserCanVoteProposalsResponse);
 }
 
 message UserID {
@@ -155,5 +157,13 @@ message AllowSendingPushRequest {
 
 message AllowSendingPushResponse {
   bool allow = 1;
+}
+
+message GetUserCanVoteProposalsRequest {
+  string user_id = 1;
+}
+
+message GetUserCanVoteProposalsResponse {
+  repeated string proposal_ids = 1;
 }
 
