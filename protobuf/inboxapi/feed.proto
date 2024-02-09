@@ -39,6 +39,7 @@ message MarkAsReadRequest {
 message MarkAsUnreadRequest {
   string subscriber_id = 1;
   repeated string ids = 2;
+  optional google.protobuf.Timestamp after = 3;
 }
 
 message MarkAsArchivedRequest {

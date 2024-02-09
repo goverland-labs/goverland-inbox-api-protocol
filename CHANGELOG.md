@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added MarkAsUnreadRequest.after field
+
 ## [0.0.17] - 2024-01-29
 
 ### Added
