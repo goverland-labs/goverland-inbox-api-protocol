@@ -20,16 +20,17 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_CreateSession_FullMethodName    = "/inboxapi.User/CreateSession"
-	User_UseAuthNonce_FullMethodName     = "/inboxapi.User/UseAuthNonce"
-	User_GetUserProfile_FullMethodName   = "/inboxapi.User/GetUserProfile"
-	User_GetSession_FullMethodName       = "/inboxapi.User/GetSession"
-	User_DeleteSession_FullMethodName    = "/inboxapi.User/DeleteSession"
-	User_DeleteUser_FullMethodName       = "/inboxapi.User/DeleteUser"
-	User_AddView_FullMethodName          = "/inboxapi.User/AddView"
-	User_LastViewed_FullMethodName       = "/inboxapi.User/LastViewed"
-	User_TrackActivity_FullMethodName    = "/inboxapi.User/TrackActivity"
-	User_AllowSendingPush_FullMethodName = "/inboxapi.User/AllowSendingPush"
+	User_CreateSession_FullMethodName           = "/inboxapi.User/CreateSession"
+	User_UseAuthNonce_FullMethodName            = "/inboxapi.User/UseAuthNonce"
+	User_GetUserProfile_FullMethodName          = "/inboxapi.User/GetUserProfile"
+	User_GetSession_FullMethodName              = "/inboxapi.User/GetSession"
+	User_DeleteSession_FullMethodName           = "/inboxapi.User/DeleteSession"
+	User_DeleteUser_FullMethodName              = "/inboxapi.User/DeleteUser"
+	User_AddView_FullMethodName                 = "/inboxapi.User/AddView"
+	User_LastViewed_FullMethodName              = "/inboxapi.User/LastViewed"
+	User_TrackActivity_FullMethodName           = "/inboxapi.User/TrackActivity"
+	User_AllowSendingPush_FullMethodName        = "/inboxapi.User/AllowSendingPush"
+	User_GetUserCanVoteProposals_FullMethodName = "/inboxapi.User/GetUserCanVoteProposals"
 )
 
 // UserClient is the client API for User service.
@@ -50,6 +51,7 @@ type UserClient interface {
 	LastViewed(ctx context.Context, in *UserLastViewedRequest, opts ...grpc.CallOption) (*UserLastViewedResponse, error)
 	TrackActivity(ctx context.Context, in *TrackActivityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	AllowSendingPush(ctx context.Context, in *AllowSendingPushRequest, opts ...grpc.CallOption) (*AllowSendingPushResponse, error)
+	GetUserCanVoteProposals(ctx context.Context, in *GetUserCanVoteProposalsRequest, opts ...grpc.CallOption) (*GetUserCanVoteProposalsResponse, error)
 }
 
 type userClient struct {
@@ -150,6 +152,15 @@ func (c *userClient) AllowSendingPush(ctx context.Context, in *AllowSendingPushR
 	return out, nil
 }
 
+func (c *userClient) GetUserCanVoteProposals(ctx context.Context, in *GetUserCanVoteProposalsRequest, opts ...grpc.CallOption) (*GetUserCanVoteProposalsResponse, error) {
+	out := new(GetUserCanVoteProposalsResponse)
+	err := c.cc.Invoke(ctx, User_GetUserCanVoteProposals_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -168,6 +179,7 @@ type UserServer interface {
 	LastViewed(context.Context, *UserLastViewedRequest) (*UserLastViewedResponse, error)
 	TrackActivity(context.Context, *TrackActivityRequest) (*emptypb.Empty, error)
 	AllowSendingPush(context.Context, *AllowSendingPushRequest) (*AllowSendingPushResponse, error)
+	GetUserCanVoteProposals(context.Context, *GetUserCanVoteProposalsRequest) (*GetUserCanVoteProposalsResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -204,6 +216,9 @@ func (UnimplementedUserServer) TrackActivity(context.Context, *TrackActivityRequ
 }
 func (UnimplementedUserServer) AllowSendingPush(context.Context, *AllowSendingPushRequest) (*AllowSendingPushResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllowSendingPush not implemented")
+}
+func (UnimplementedUserServer) GetUserCanVoteProposals(context.Context, *GetUserCanVoteProposalsRequest) (*GetUserCanVoteProposalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCanVoteProposals not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -398,6 +413,24 @@ func _User_AllowSendingPush_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetUserCanVoteProposals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCanVoteProposalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserCanVoteProposals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetUserCanVoteProposals_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserCanVoteProposals(ctx, req.(*GetUserCanVoteProposalsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -444,6 +477,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllowSendingPush",
 			Handler:    _User_AllowSendingPush_Handler,
+		},
+		{
+			MethodName: "GetUserCanVoteProposals",
+			Handler:    _User_GetUserCanVoteProposals_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
