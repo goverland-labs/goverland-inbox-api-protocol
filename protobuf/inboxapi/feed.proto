@@ -9,10 +9,10 @@ option go_package = ".;inboxapi";
 
 service Feed {
   rpc GetUserFeed(GetUserFeedRequest) returns (FeedList);
-  rpc MarkAsRead(MarkAsReadRequest) returns (google.protobuf.Empty);
-  rpc MarkAsUnread(MarkAsUnreadRequest) returns (google.protobuf.Empty);
-  rpc MarkAsArchived(MarkAsArchivedRequest) returns (google.protobuf.Empty);
-  rpc MarkAsUnarchived(MarkAsUnarchivedRequest) returns (google.protobuf.Empty);
+  rpc MarkAsRead(MarkAsReadRequest) returns (UnreadStats);
+  rpc MarkAsUnread(MarkAsUnreadRequest) returns (UnreadStats);
+  rpc MarkAsArchived(MarkAsArchivedRequest) returns (UnreadStats);
+  rpc MarkAsUnarchived(MarkAsUnarchivedRequest) returns (UnreadStats);
   rpc UserSubscribe(UserSubscribeRequest) returns (google.protobuf.Empty);
 }
 
@@ -57,6 +57,11 @@ message FeedList {
   repeated FeedItem list = 1;
   uint32 total_count = 3;
   uint32 unread_count = 4;
+}
+
+message UnreadStats {
+  uint32 total_count = 1;
+  uint32 unread_count = 2;
 }
 
 message FeedItem {

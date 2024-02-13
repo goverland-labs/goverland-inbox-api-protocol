@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added unread stats for all methods for changing read state of the item
+
 ## [0.0.19] - 2024-02-11
 
 ### Added

@@ -33,10 +33,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FeedClient interface {
 	GetUserFeed(ctx context.Context, in *GetUserFeedRequest, opts ...grpc.CallOption) (*FeedList, error)
-	MarkAsRead(ctx context.Context, in *MarkAsReadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	MarkAsArchived(ctx context.Context, in *MarkAsArchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	MarkAsRead(ctx context.Context, in *MarkAsReadRequest, opts ...grpc.CallOption) (*UnreadStats, error)
+	MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, opts ...grpc.CallOption) (*UnreadStats, error)
+	MarkAsArchived(ctx context.Context, in *MarkAsArchivedRequest, opts ...grpc.CallOption) (*UnreadStats, error)
+	MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedRequest, opts ...grpc.CallOption) (*UnreadStats, error)
 	UserSubscribe(ctx context.Context, in *UserSubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -57,8 +57,8 @@ func (c *feedClient) GetUserFeed(ctx context.Context, in *GetUserFeedRequest, op
 	return out, nil
 }
 
-func (c *feedClient) MarkAsRead(ctx context.Context, in *MarkAsReadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *feedClient) MarkAsRead(ctx context.Context, in *MarkAsReadRequest, opts ...grpc.CallOption) (*UnreadStats, error) {
+	out := new(UnreadStats)
 	err := c.cc.Invoke(ctx, Feed_MarkAsRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *feedClient) MarkAsRead(ctx context.Context, in *MarkAsReadRequest, opts
 	return out, nil
 }
 
-func (c *feedClient) MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *feedClient) MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, opts ...grpc.CallOption) (*UnreadStats, error) {
+	out := new(UnreadStats)
 	err := c.cc.Invoke(ctx, Feed_MarkAsUnread_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -75,8 +75,8 @@ func (c *feedClient) MarkAsUnread(ctx context.Context, in *MarkAsUnreadRequest, 
 	return out, nil
 }
 
-func (c *feedClient) MarkAsArchived(ctx context.Context, in *MarkAsArchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *feedClient) MarkAsArchived(ctx context.Context, in *MarkAsArchivedRequest, opts ...grpc.CallOption) (*UnreadStats, error) {
+	out := new(UnreadStats)
 	err := c.cc.Invoke(ctx, Feed_MarkAsArchived_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -84,8 +84,8 @@ func (c *feedClient) MarkAsArchived(ctx context.Context, in *MarkAsArchivedReque
 	return out, nil
 }
 
-func (c *feedClient) MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *feedClient) MarkAsUnarchived(ctx context.Context, in *MarkAsUnarchivedRequest, opts ...grpc.CallOption) (*UnreadStats, error) {
+	out := new(UnreadStats)
 	err := c.cc.Invoke(ctx, Feed_MarkAsUnarchived_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,10 +107,10 @@ func (c *feedClient) UserSubscribe(ctx context.Context, in *UserSubscribeRequest
 // for forward compatibility
 type FeedServer interface {
 	GetUserFeed(context.Context, *GetUserFeedRequest) (*FeedList, error)
-	MarkAsRead(context.Context, *MarkAsReadRequest) (*emptypb.Empty, error)
-	MarkAsUnread(context.Context, *MarkAsUnreadRequest) (*emptypb.Empty, error)
-	MarkAsArchived(context.Context, *MarkAsArchivedRequest) (*emptypb.Empty, error)
-	MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*emptypb.Empty, error)
+	MarkAsRead(context.Context, *MarkAsReadRequest) (*UnreadStats, error)
+	MarkAsUnread(context.Context, *MarkAsUnreadRequest) (*UnreadStats, error)
+	MarkAsArchived(context.Context, *MarkAsArchivedRequest) (*UnreadStats, error)
+	MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*UnreadStats, error)
 	UserSubscribe(context.Context, *UserSubscribeRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedFeedServer()
 }
@@ -122,16 +122,16 @@ type UnimplementedFeedServer struct {
 func (UnimplementedFeedServer) GetUserFeed(context.Context, *GetUserFeedRequest) (*FeedList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserFeed not implemented")
 }
-func (UnimplementedFeedServer) MarkAsRead(context.Context, *MarkAsReadRequest) (*emptypb.Empty, error) {
+func (UnimplementedFeedServer) MarkAsRead(context.Context, *MarkAsReadRequest) (*UnreadStats, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkAsRead not implemented")
 }
-func (UnimplementedFeedServer) MarkAsUnread(context.Context, *MarkAsUnreadRequest) (*emptypb.Empty, error) {
+func (UnimplementedFeedServer) MarkAsUnread(context.Context, *MarkAsUnreadRequest) (*UnreadStats, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkAsUnread not implemented")
 }
-func (UnimplementedFeedServer) MarkAsArchived(context.Context, *MarkAsArchivedRequest) (*emptypb.Empty, error) {
+func (UnimplementedFeedServer) MarkAsArchived(context.Context, *MarkAsArchivedRequest) (*UnreadStats, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkAsArchived not implemented")
 }
-func (UnimplementedFeedServer) MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*emptypb.Empty, error) {
+func (UnimplementedFeedServer) MarkAsUnarchived(context.Context, *MarkAsUnarchivedRequest) (*UnreadStats, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkAsUnarchived not implemented")
 }
 func (UnimplementedFeedServer) UserSubscribe(context.Context, *UserSubscribeRequest) (*emptypb.Empty, error) {
