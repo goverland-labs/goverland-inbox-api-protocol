@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- GetAvailableDaoByWallet method for calculating available dao by wallet address via zerion API
+
 ## [0.0.20] - 2024-02-13
 
 ### Added
