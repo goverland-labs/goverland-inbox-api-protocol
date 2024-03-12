@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;inboxapi";
+
+service Proposal {
+  rpc GetFeaturedProposals(google.protobuf.Empty) returns (GetFeaturedProposalsResponse);
+}
+
+message GetFeaturedProposalsResponse {
+  repeated string proposal_ids = 1;
+}
+
