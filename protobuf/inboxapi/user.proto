@@ -31,6 +31,8 @@ service User {
   rpc AllowSendingPush(AllowSendingPushRequest) returns (AllowSendingPushResponse);
 
   rpc GetUserCanVoteProposals(GetUserCanVoteProposalsRequest) returns (GetUserCanVoteProposalsResponse);
+
+  rpc GetAvailableDaoByWallet(GetAvailableDaoByWalletRequest) returns (GetAvailableDaoByWalletResponse);
 }
 
 message UserID {
@@ -165,5 +167,13 @@ message GetUserCanVoteProposalsRequest {
 
 message GetUserCanVoteProposalsResponse {
   repeated string proposal_ids = 1;
+}
+
+message GetAvailableDaoByWalletRequest {
+  string user_id = 1;
+}
+
+message GetAvailableDaoByWalletResponse {
+  repeated string dao_uuids = 1;
 }
 
