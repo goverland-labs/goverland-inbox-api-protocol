@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- Extend CreateSessionRequest with app_version field
+
 ## [0.0.24] - 2024-03-25
 
 ### Added
