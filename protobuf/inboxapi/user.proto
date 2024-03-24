@@ -16,6 +16,7 @@ service User {
   rpc UseAuthNonce(UseAuthNonceRequest) returns (UseAuthNonceResponse);
 
   rpc GetUserProfile(GetUserProfileRequest) returns (UserProfile);
+  rpc GetUser(GetUserRequest) returns (UserInfo);
 
   rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
 
@@ -92,6 +93,10 @@ message CreateSessionResponse {
 
 message GetUserProfileRequest {
   string user_id = 1;
+}
+
+message GetUserRequest {
+  string address = 1;
 }
 
 message GetSessionRequest {
