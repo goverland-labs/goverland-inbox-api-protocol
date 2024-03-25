@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.2
-// source: protobuf/inboxapi/user.proto
+// source: inboxapi/user.proto
 
 package inboxapi
 
@@ -558,5 +558,5 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "protobuf/inboxapi/user.proto",
+	Metadata: "inboxapi/user.proto",
 }
