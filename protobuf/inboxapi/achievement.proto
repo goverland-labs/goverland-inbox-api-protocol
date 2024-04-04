@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;inboxapi";
+
+service Achievement {
+  rpc GetUserAchievementList(GetUserAchievementListRequest) returns (AchievementList);
+  rpc MarkAsViewed(MarkAsViewedRequest) returns (google.protobuf.Empty);
+}
+
+message GetUserAchievementListRequest {
+  string user_id = 1;
+}
+
+message Progress {
+  uint32 goal = 1;
+  uint32 current = 2;
+}
+
+message AchievementInfo {
+  string id = 1;
+  string title = 2;
+  string subtitle = 3;
+  string description = 4;
+  string achievement_message = 5;
+  string image = 6;
+  Progress progress = 7;
+  google.protobuf.Timestamp achieved_at = 8;
+  google.protobuf.Timestamp viewed_at = 9;
+  bool exclusive = 10;
+}
+
+message AchievementList {
+  repeated AchievementInfo list = 1;
+}
+
+message MarkAsViewedRequest {
+  string user_id = 1;
+  string achievement_id = 2;
+}
