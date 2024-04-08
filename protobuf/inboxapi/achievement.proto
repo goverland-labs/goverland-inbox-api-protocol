@@ -21,13 +21,18 @@ message Progress {
   uint32 current = 2;
 }
 
+message Image {
+  string size = 1;
+  string path = 2;
+}
+
 message AchievementInfo {
   string id = 1;
   string title = 2;
   string subtitle = 3;
   string description = 4;
   string achievement_message = 5;
-  string image = 6;
+  repeated Image images = 6;
   Progress progress = 7;
   google.protobuf.Timestamp achieved_at = 8;
   google.protobuf.Timestamp viewed_at = 9;
