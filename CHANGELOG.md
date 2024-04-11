@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.25] - 2024-04-11
+
 ### Changed
 - Extend CreateSessionRequest with app_version field
 - Add achievement service
