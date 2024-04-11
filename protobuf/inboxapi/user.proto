@@ -73,6 +73,8 @@ message UserProfile {
 message CreateSessionRequest {
   string device_uuid = 1;
   string device_name = 2;
+  string app_version = 5;
+  string app_platform = 6;
 
   oneof account {
     Guest guest = 3;
