@@ -10,10 +10,7 @@ service Settings {
   rpc AddPushToken(AddPushTokenRequest) returns (google.protobuf.Empty);
   rpc RemovePushToken(RemovePushTokenRequest) returns (google.protobuf.Empty);
   rpc PushTokenExists(PushTokenExistsRequest) returns (PushTokenExistsResponse);
-  // Deprecated: use GetPushTokenList instead
-  rpc GetPushToken(GetPushTokenRequest) returns (PushTokenResponse) {
-    option deprecated = true;
-  };
+  rpc GetPushToken(GetPushTokenRequest) returns (PushTokenResponse);
   // GetPushTokenList returns list of saved pushed tokens
   rpc GetPushTokenList(GetPushTokenListRequest) returns (PushTokenListResponse);
 }
@@ -26,6 +23,7 @@ message AddPushTokenRequest {
 
 message RemovePushTokenRequest {
   string user_id = 1;
+  string device_uuid = 2;
 }
 
 message PushTokenExistsRequest {

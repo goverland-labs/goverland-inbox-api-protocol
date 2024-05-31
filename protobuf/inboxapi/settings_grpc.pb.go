@@ -34,8 +34,6 @@ type SettingsClient interface {
 	AddPushToken(ctx context.Context, in *AddPushTokenRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RemovePushToken(ctx context.Context, in *RemovePushTokenRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	PushTokenExists(ctx context.Context, in *PushTokenExistsRequest, opts ...grpc.CallOption) (*PushTokenExistsResponse, error)
-	// Deprecated: Do not use.
-	// Deprecated: use GetPushTokenList instead
 	GetPushToken(ctx context.Context, in *GetPushTokenRequest, opts ...grpc.CallOption) (*PushTokenResponse, error)
 	// GetPushTokenList returns list of saved pushed tokens
 	GetPushTokenList(ctx context.Context, in *GetPushTokenListRequest, opts ...grpc.CallOption) (*PushTokenListResponse, error)
@@ -76,7 +74,6 @@ func (c *settingsClient) PushTokenExists(ctx context.Context, in *PushTokenExist
 	return out, nil
 }
 
-// Deprecated: Do not use.
 func (c *settingsClient) GetPushToken(ctx context.Context, in *GetPushTokenRequest, opts ...grpc.CallOption) (*PushTokenResponse, error) {
 	out := new(PushTokenResponse)
 	err := c.cc.Invoke(ctx, Settings_GetPushToken_FullMethodName, in, out, opts...)
@@ -102,8 +99,6 @@ type SettingsServer interface {
 	AddPushToken(context.Context, *AddPushTokenRequest) (*emptypb.Empty, error)
 	RemovePushToken(context.Context, *RemovePushTokenRequest) (*emptypb.Empty, error)
 	PushTokenExists(context.Context, *PushTokenExistsRequest) (*PushTokenExistsResponse, error)
-	// Deprecated: Do not use.
-	// Deprecated: use GetPushTokenList instead
 	GetPushToken(context.Context, *GetPushTokenRequest) (*PushTokenResponse, error)
 	// GetPushTokenList returns list of saved pushed tokens
 	GetPushTokenList(context.Context, *GetPushTokenListRequest) (*PushTokenListResponse, error)
