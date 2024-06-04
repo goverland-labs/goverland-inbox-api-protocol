@@ -48,6 +48,11 @@ message GetPushTokenListRequest {
   string user_id = 1;
 }
 
+message PushTokenDetails {
+  string token = 1;
+  string device_uuid = 2;
+}
+
 message PushTokenListResponse {
-  repeated string tokens = 1;
+  repeated PushTokenDetails tokens = 1;
 }
