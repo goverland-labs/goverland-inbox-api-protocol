@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- Separate push tokens by device uuid 
+
 ## [0.0.25] - 2024-04-11
 
 ### Changed
