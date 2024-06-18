@@ -59,17 +59,16 @@ message PushTokenListResponse {
   repeated PushTokenDetails tokens = 1;
 }
 
-enum PUSH_SETTINGS_DAO {
-  PUSH_SETTINGS_UNSPECIFIED = 0;
-  PUSH_SETTINGS_NEW_PROPOSAL_CREATED = 1;
-  PUSH_SETTINGS_QUORUM_REACHED = 2;
-  PUSH_SETTINGS_VOTE_FINISHES_SOON = 3;
-  PUSH_SETTINGS_VOTE_FINISHED = 4;
+message PushSettingsDao {
+  bool new_proposal_created = 1;
+  bool quorum_reached = 2;
+  bool vote_finishes_soon = 3;
+  bool vote_finished = 4;
 }
 
 message SetPushDetailsRequest {
   string user_id = 1;
-  repeated PUSH_SETTINGS_DAO dao = 2;
+  PushSettingsDao dao = 2;
 }
 
 message GetPushDetailsRequest {
@@ -78,5 +77,5 @@ message GetPushDetailsRequest {
 
 message GetPushDetailsResponse {
   string user_id = 1;
-  repeated PUSH_SETTINGS_DAO dao = 2;
+  PushSettingsDao dao = 2;
 }
