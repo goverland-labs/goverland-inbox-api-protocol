@@ -60,10 +60,10 @@ message PushTokenListResponse {
 }
 
 message PushSettingsDao {
-  bool new_proposal_created = 1;
-  bool quorum_reached = 2;
-  bool vote_finishes_soon = 3;
-  bool vote_finished = 4;
+  optional bool new_proposal_created = 1;
+  optional bool quorum_reached = 2;
+  optional bool vote_finishes_soon = 3;
+  optional bool vote_finished = 4;
 }
 
 message SetPushDetailsRequest {
