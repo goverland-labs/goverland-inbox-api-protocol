@@ -15,6 +15,9 @@ service Settings {
   rpc GetPushTokenList(GetPushTokenListRequest) returns (PushTokenListResponse);
   rpc SetPushDetails(SetPushDetailsRequest) returns (google.protobuf.Empty);
   rpc GetPushDetails(GetPushDetailsRequest) returns (GetPushDetailsResponse);
+  // Feed settings section
+  rpc SetFeedSettings(SetFeedSettingsRequest) returns (google.protobuf.Empty);
+  rpc GetFeedSettings(GetFeedSettingsRequest) returns (GetFeedSettingsResponse);
 }
 
 message AddPushTokenRequest {
@@ -78,4 +81,24 @@ message GetPushDetailsRequest {
 message GetPushDetailsResponse {
   string user_id = 1;
   PushSettingsDao dao = 2;
+}
+
+message FeedSettings {
+  optional bool archive_proposal_after_vote = 1;
+  // in duration: 1s, 4h, 1d, 1m etc
+  optional string autoarchive_after_duration = 2;
+}
+
+message SetFeedSettingsRequest {
+  string user_id = 1;
+  FeedSettings feed_settings = 2;
+}
+
+message GetFeedSettingsRequest {
+  string user_id = 1;
+}
+
+message GetFeedSettingsResponse {
+  string user_id = 1;
+  FeedSettings feed_settings = 2;
 }
