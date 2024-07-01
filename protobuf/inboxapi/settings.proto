@@ -13,6 +13,8 @@ service Settings {
   rpc GetPushToken(GetPushTokenRequest) returns (PushTokenResponse);
   // GetPushTokenList returns list of saved pushed tokens
   rpc GetPushTokenList(GetPushTokenListRequest) returns (PushTokenListResponse);
+  rpc SetPushDetails(SetPushDetailsRequest) returns (google.protobuf.Empty);
+  rpc GetPushDetails(GetPushDetailsRequest) returns (GetPushDetailsResponse);
 }
 
 message AddPushTokenRequest {
@@ -55,4 +57,25 @@ message PushTokenDetails {
 
 message PushTokenListResponse {
   repeated PushTokenDetails tokens = 1;
+}
+
+message PushSettingsDao {
+  optional bool new_proposal_created = 1;
+  optional bool quorum_reached = 2;
+  optional bool vote_finishes_soon = 3;
+  optional bool vote_finished = 4;
+}
+
+message SetPushDetailsRequest {
+  string user_id = 1;
+  PushSettingsDao dao = 2;
+}
+
+message GetPushDetailsRequest {
+  string user_id = 1;
+}
+
+message GetPushDetailsResponse {
+  string user_id = 1;
+  PushSettingsDao dao = 2;
 }
