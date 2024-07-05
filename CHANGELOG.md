@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.28] - 2024-07-05
+
 ### Added
 - Feed settings methods
 
