@@ -8,9 +8,20 @@ option go_package = ".;inboxapi";
 
 service Proposal {
   rpc GetFeaturedProposals(google.protobuf.Empty) returns (GetFeaturedProposalsResponse);
+  // GetAISummary returns AI summary text by the provided proposal identifier
+  rpc GetAISummary(GetAISummaryRequest) returns (GetAISummaryResponse);
 }
 
 message GetFeaturedProposalsResponse {
   repeated string proposal_ids = 1;
+}
+
+message GetAISummaryRequest {
+  string user_id = 1;
+  string proposal_id = 2;
+}
+
+message GetAISummaryResponse {
+  string summary = 1;
 }
 
