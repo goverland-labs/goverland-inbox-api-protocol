@@ -13,7 +13,7 @@ message GetVersionsDetailsRequest {
   string platform = 1;
 }
 
-// AppVersionDetails describe concrete application version
+// AppVersionDetails describe specific application version
 message AppVersionDetails {
   // semver
   string version = 1;

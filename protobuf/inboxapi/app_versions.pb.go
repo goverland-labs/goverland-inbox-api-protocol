@@ -67,7 +67,7 @@ func (x *GetVersionsDetailsRequest) GetPlatform() string {
 	return ""
 }
 
-// AppVersionDetails describe concrete application version
+// AppVersionDetails describe specific application version
 type AppVersionDetails struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
