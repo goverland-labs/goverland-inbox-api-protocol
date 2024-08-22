@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package inboxapi;
+
+option go_package = ".;inboxapi";
+
+service AppVersions {
+  // GetVersionsDetails returns app versions order by semver desc with markdown texts
+  rpc GetVersionsDetails(GetVersionsDetailsRequest) returns (GetVersionsDetailsResponse);
+}
+
+message GetVersionsDetailsRequest {
+  string platform = 1;
+}
+
+// AppVersionDetails describe concrete application version
+message AppVersionDetails {
+  // semver
+  string version = 1;
+  // platform: ios, android, web
+  string platform = 2;
+  // markdown details
+  string description = 3;
+}
+
+message GetVersionsDetailsResponse {
+  repeated AppVersionDetails details = 1;
+}
