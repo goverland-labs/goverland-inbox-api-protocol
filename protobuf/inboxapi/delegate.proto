@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package inboxapi;
+
+import "google/protobuf/empty.proto";
+
+option go_package = ".;inboxapi";
+
+service Delegate {
+  rpc GetAllowedDaos(google.protobuf.Empty) returns (GetAllowedDaosResponse);
+}
+
+message GetAllowedDaosResponse {
+  repeated string daos = 1;
+}
