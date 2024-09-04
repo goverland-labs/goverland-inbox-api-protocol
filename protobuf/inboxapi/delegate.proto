@@ -3,13 +3,37 @@ syntax = "proto3";
 package inboxapi;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = ".;inboxapi";
 
 service Delegate {
   rpc GetAllowedDaos(google.protobuf.Empty) returns (GetAllowedDaosResponse);
+  rpc StoreDelegated(StoreDelegatedRequest) returns (google.protobuf.Empty);
+  rpc GetLastDelegation(GetLastDelegationRequest) returns (GetLastDelegationResponse);
 }
 
 message GetAllowedDaosResponse {
-  repeated string daos = 1;
+  repeated string daos_names = 1;
+}
+
+message StoreDelegatedRequest {
+  string user_id = 1;
+  string dao_id = 2;
+  string tx_hash = 3;
+  string delegates = 4;
+  google.protobuf.Timestamp expiration = 5;
+}
+
+message GetLastDelegationRequest {
+  string user_id = 1;
+  string dao_id = 2;
+}
+
+message GetLastDelegationResponse {
+  string user_id = 1;
+  string dao_id = 2;
+  string tx_hash = 3;
+  string delegates = 4;
+  google.protobuf.Timestamp expiration = 5;
 }
