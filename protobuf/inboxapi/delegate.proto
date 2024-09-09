@@ -32,8 +32,9 @@ message GetLastDelegationRequest {
 
 message GetLastDelegationResponse {
   string user_id = 1;
-  string dao_id = 2;
-  string tx_hash = 3;
-  string delegates = 4;
-  google.protobuf.Timestamp expiration = 5;
+  google.protobuf.Timestamp created_at = 2;
+  string dao_id = 3;
+  string tx_hash = 4;
+  string delegates = 5;
+  google.protobuf.Timestamp expiration = 6;
 }
