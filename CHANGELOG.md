@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.2] - 2024-09-26
+
+### Added
+- Added store user delegation
+- Added delegate allowed daos
+
 ## [0.2.1] - 2024-08-22
 
 ### Fixed
