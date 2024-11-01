@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Added github actions
+- Added README.md
+- Added CONTRIBUTING.md
+- Added LICENSE
+
 ## [0.2.2] - 2024-09-26
 
 ### Added
